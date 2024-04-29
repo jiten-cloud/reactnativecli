@@ -1,7 +1,7 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-const Home = ({navigation}) => {
+const Home = ({navigation}: any) => {
   const navigateToStartScreen = () => {
     navigation.navigate('startscreen');
   };

@@ -1,13 +1,33 @@
-import {StyleSheet, Text, View, Image, TextInput, Button} from 'react-native';
-import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  Button,
+  Alert,
+} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {userContext} from '../store/UserContext';
 
-const StartGameScreen = ({navigation}) => {
+const StartGameScreen = ({navigation}: any) => {
   const [gamerName, setGamerName] = useState('');
+  const {users, addUser} = useContext(userContext);
   const moveToGameScreen = () => {
-    navigation.navigate('gamescreen', {
-      user: gamerName,
-      level: 2,
-    });
+    const userIndex = users?.findIndex(user => user.username === gamerName);
+    if (userIndex !== -1) {
+      const user = users[userIndex];
+      navigation.navigate('gamescreen', {
+        level: Math.ceil(user.score / 20) || 1,
+        score: user.score,
+      });
+    } else {
+      addUser(gamerName);
+      navigation.navigate('gamescreen', {
+        level: 1,
+        score: 0,
+      });
+    }
   };
   return (
     <View style={styles.container}>

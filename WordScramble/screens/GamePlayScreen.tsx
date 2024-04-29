@@ -1,18 +1,38 @@
-import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import {
+  Button,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+} from 'react-native';
+import React, {useState, useLayoutEffect, useEffect, useRef} from 'react';
 import Block from '../components/Block';
 import InputBlock from '../components/InputBlock';
 
-const GamePlayScreen = ({route}: {route: any}) => {
+const GamePlayScreen = ({route, navigation}: any) => {
   const {letters} = route.params;
-  const [inputLetters, setInputLetters] = useState({
-    first: '',
-    second: '',
-    third: '',
-    fourth: '',
-    fifth: '',
-    sixth: '',
-  });
+  const [correctWords, setcorrectWords] = useState<string[]>([]);
+  const [timer, setTimer] = useState(60);
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setTimer(prev => {
+  //       if (prev === 1) {
+  //         navigation.navigate('gameoverscreen');
+  //         clearInterval(interval);
+  //       }
+  //       return prev - 1;
+  //     });
+  //     return () => clearInterval(interval); // Clea
+  //   }, 1000);
+  // }, []);
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => <Text>{timer}s</Text>,
+  //   });
+  // }, [timer]);
 
   return (
     <View style={styles.mainContainer}>
@@ -25,23 +45,47 @@ const GamePlayScreen = ({route}: {route: any}) => {
               })}
             </View>
             <View style={styles.list}>
-              {Object.keys(inputLetters).map(val => (
-                <InputBlock key={val} />
-              ))}
+              <InputBlock setcorrectWords={setcorrectWords} letters={letters} />
             </View>
           </View>
           <View style={styles.wordsContainer}>
-            <View>
-              <Button title="ENTER" />
-            </View>
-            <View>
-              <Text>words</Text>
+            <View style={styles.word}>
+              <Text style={{flex: 1, textAlign: 'center'}}>Your words</Text>
+              <View
+                style={{
+                  flex: 4,
+                  flexWrap: 'wrap',
+                  marginTop: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                {correctWords.map((val, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      padding: 10,
+                      flexDirection: 'row',
+                    }}>
+                    <Image
+                      style={{height: 20, width: 20}}
+                      source={require('../assets/Green-check-mark-icon-on-transparent-background-PNG.png')}
+                    />
+                    <Text>{val}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
         </View>
       </View>
 
-      <View style={styles.timerContainer}></View>
+      <View style={styles.timerContainer}>
+        <Image
+          source={require('../assets/sand-clock.png')}
+          style={{height: 40, width: 40}}
+        />
+        <Text style={styles.timerText}>{timer}s</Text>
+      </View>
     </View>
   );
 };
@@ -54,7 +98,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   wrapper: {
-    flex: 4,
+    flex: 5,
     backgroundColor: '#223660',
   },
   innerContainer: {
@@ -65,7 +109,6 @@ const styles = StyleSheet.create({
   },
   inputletterContainer: {
     flex: 2,
-    justifyContent: 'space-between',
   },
   list: {
     flexDirection: 'row',
@@ -73,12 +116,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   wordsContainer: {
-    flex: 3,
-    justifyContent: 'space-evenly',
-    margin: 20,
+    flex: 1,
+  },
+  word: {
+    flex: 1,
   },
   timerContainer: {
     flex: 1,
     backgroundColor: '#223660',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 15,
+  },
+  timerText: {
+    color: 'white',
+    fontSize: 25,
+    padding: 10,
   },
 });

@@ -3,13 +3,13 @@ import React, {useLayoutEffect, useState} from 'react';
 import Block from '../components/Block';
 import {generateRandomAlphabets} from '../utils/lettergenerator';
 
-const GameScreen = ({route, navigation}) => {
+const GameScreen = ({route, navigation}: any) => {
   const [data, setData] = useState<string[]>([]);
-  const {user, level} = route?.params;
+  const {user, level, score} = route?.params;
   useLayoutEffect(() => {
     navigation.setOptions({
       title: `Level ${level}`,
-      headerRight: () => <Text style={{color: 'blue'}}>score 240</Text>,
+      headerRight: () => <Text style={{color: 'blue'}}>score {score}</Text>,
     });
   }, [navigation]);
   const generateNumbers = () => {

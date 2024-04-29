@@ -14,6 +14,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
 import GamePlayScreen from './screens/GamePlayScreen';
+import {UserContextProvider} from './store/UserContext';
+import GameOverScreen from './screens/GameOverScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,26 +23,29 @@ function App(): React.JSX.Element {
   return (
     <>
       <StatusBar barStyle={'light-content'} />
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="startscreen"
-            component={StartGameScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen name="gamescreen" component={GameScreen} />
-          <Stack.Screen name="gameplayscreen" component={GamePlayScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <UserContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="startscreen"
+              component={StartGameScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="gamescreen" component={GameScreen} />
+            <Stack.Screen name="gameplayscreen" component={GamePlayScreen} />
+            <Stack.Screen name="gameoverscreen" component={GameOverScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserContextProvider>
     </>
   );
 }
