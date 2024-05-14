@@ -107,7 +107,14 @@ const InputBlock = ({
         return;
     }
     if (iswordExist) {
-      setcorrectWords((prev: string[]) => [...prev, word]);
+      setcorrectWords((prev: string[]) => {
+        if (prev.includes(word)) {
+          Alert.alert('Warning', 'You created already');
+          return prev;
+        } else {
+          return [...prev, word];
+        }
+      });
     } else {
       Alert.alert('Wrong word', 'Please try again');
     }
@@ -120,7 +127,6 @@ const InputBlock = ({
       input6: '',
     });
     inputRef.current[0].focus();
-    // console.log(file.findIndex((val: any) => val.word == 'abo'));
   };
 
   return (

@@ -2,57 +2,58 @@ import {StyleSheet, Text, View, Pressable, Image, FlatList} from 'react-native';
 import React, {useLayoutEffect, useState} from 'react';
 import Block from '../components/Block';
 import {generateRandomAlphabets} from '../utils/lettergenerator';
+import Wrapper from '../components/Wrapper';
 
 const GameScreen = ({route, navigation}: any) => {
   const [data, setData] = useState<string[]>([]);
   const {user, level, score} = route?.params;
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: `Level ${level}`,
-      headerRight: () => <Text style={{color: 'blue'}}>score {score}</Text>,
-    });
-  }, [navigation]);
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     title: `Level ${level}`,
+  //     headerRight: () => <Text style={{color: 'blue'}}>score {score}</Text>,
+  //   });
+  // }, [navigation]);
   const generateNumbers = () => {
     const letters = generateRandomAlphabets();
     setData(letters);
     setTimeout(() => {
-      navigation.navigate('gameplayscreen', {
+      navigation.replace('gameplayscreen', {
         letters,
+        user,
+        score,
       });
-    }, 2000);
+    }, 500);
   };
   return (
     <View style={styles.container}>
-      <View style={styles.wrapper}>
-        <View style={styles.upperContainer}>
-          <View style={styles.letterContainer}>
-            {data.length > 0 && (
-              <>
-                <View style={styles.blocks}>
-                  <Block value={data[0]} />
-                </View>
-                <View style={styles.blocks}>
-                  <Block value={data[1]} />
-                  <Block value={data[2]} />
-                </View>
-                <View style={styles.blocks}>
-                  <Block value={data[3]} />
-                  <Block value={data[4]} />
-                </View>
-                <View style={styles.blocks}>
-                  <Block value={data[5]} />
-                </View>
-              </>
-            )}
-          </View>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={require('../assets/bucket_6377052.png')}
-            />
-          </View>
+      <Wrapper>
+        <View style={styles.letterContainer}>
+          {data.length > 0 && (
+            <>
+              <View style={styles.blocks}>
+                <Block value={data[0]} />
+              </View>
+              <View style={styles.blocks}>
+                <Block value={data[1]} />
+                <Block value={data[2]} />
+              </View>
+              <View style={styles.blocks}>
+                <Block value={data[3]} />
+                <Block value={data[4]} />
+              </View>
+              <View style={styles.blocks}>
+                <Block value={data[5]} />
+              </View>
+            </>
+          )}
         </View>
-      </View>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            source={require('../assets/bucket_6377052.png')}
+          />
+        </View>
+      </Wrapper>
 
       <View style={styles.lowerContainer}>
         <Pressable onPress={generateNumbers}>
@@ -69,19 +70,6 @@ export default GameScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-
-  wrapper: {
-    flex: 4,
-    justifyContent: 'space-between',
-    backgroundColor: '#223660',
-  },
-  upperContainer: {
-    flex: 1,
-    backgroundColor: 'white',
-    borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 30,
-    justifyContent: 'space-between',
   },
   letterContainer: {
     flex: 2,

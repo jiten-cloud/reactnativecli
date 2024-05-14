@@ -20,14 +20,17 @@ const StartGameScreen = ({navigation}: any) => {
       navigation.navigate('gamescreen', {
         level: Math.ceil(user.score / 20) || 1,
         score: user.score,
+        user: user.username,
       });
     } else {
       addUser(gamerName);
       navigation.navigate('gamescreen', {
         level: 1,
         score: 0,
+        user: gamerName,
       });
     }
+    setGamerName('');
   };
   return (
     <View style={styles.container}>
@@ -47,6 +50,7 @@ const StartGameScreen = ({navigation}: any) => {
           onChangeText={Text => {
             setGamerName(Text);
           }}
+          value={gamerName}
         />
         <Button title="Let's Go" onPress={moveToGameScreen} />
       </View>
